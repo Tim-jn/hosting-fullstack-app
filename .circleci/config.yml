@@ -13,7 +13,7 @@ jobs:
     steps:
       # install node and checkout code
       - node/install:
-          node-version: '14.15'         
+          node-version: "14.15"
       - checkout
       # Use root level package.json to install dependencies in the frontend app
       - run:
@@ -24,26 +24,26 @@ jobs:
             echo "NPM --version" 
             echo $(npm --version)
             npm run frontend:install
-      # TODO: Install dependencies in the the backend API          
+      # TODO: Install dependencies in the the backend API \\ done
       - run:
           name: Install API Dependencies
           command: |
-           echo "TODO: Install dependencies in the the backend API  "
-      # TODO: Lint the frontend
+            npm run backend:install
+      # TODO: Lint the frontend \\ done
       - run:
           name: Front-End Lint
           command: |
-            echo "TODO: Lint the frontend"
-      # TODO: Build the frontend app
+            npm run frontend:lint
+      # TODO: Build the frontend app \\ done
       - run:
           name: Front-End Build
           command: |
-            echo "TODO: Build the frontend app"
-      # TODO: Build the backend API      
+            npm run frontend:build
+      # TODO: Build the backend API \\ done
       - run:
           name: API Build
           command: |
-            echo "TODO: Build the backend API"
+            npm run backend:build
   # deploy step will run only after manual approval
   deploy:
     docker:
@@ -51,16 +51,19 @@ jobs:
       # more setup needed for aws, node, elastic beanstalk
     steps:
       - node/install:
-          node-version: '14.15' 
+          node-version: "14.15"
       - eb/setup
       - aws-cli/setup
       - checkout
+        # TODO: Install, build, deploy in both apps \\ done
       - run:
-          name: Deploy App
-          # TODO: Install, build, deploy in both apps
+          name: Deploy Backend
           command: |
-            echo "# TODO: Install, build, deploy in both apps"
-            
+            npm run backend:deploy
+      - run:
+          name: Deploy Frontend
+          command: |
+            npm run frontend:deploy
 workflows:
   udagram:
     jobs:
